@@ -1,6 +1,16 @@
 # prompts
 Tips-templates for prompting AI
 
+# General
+
+Review this prompt and give me a revised version that is best suited for an AI prompt. Prompt:  
+\[prompt\]
+
+Ask me 40 questions about my story that readers would have, focusing on plot holes and continuity. The story:  
+\[story\]
+
+
+
 
 # Gemini
 
