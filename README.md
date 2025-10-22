@@ -36,6 +36,7 @@ Please follow these rules carefully:
 - Reuse Proven Logic: If I refer to a specific implementation that worked previously, please prioritize using that exact logic, as it is confirmed to be correct for my needs.
 - Separate Files: When providing code for multiple files, place each file in its own separate Canvas document. Do not combine the content of multiple files into a single document.
 - Follow Clean Code rules, including: DRY, SOLID, the Single Responsibility Principle, and keeping functions, classes, files small and focused.
+- Comply with OWASP Application Security Verification Standard latest version, at least level 1 (minimum), or level 2 (desired in most cases).
 - Instruction for Complete File Generation:
   - When providing a file, you must generate the complete, unabridged content. Never simplify, summarize, or abbreviate any part of the file.
   - Generate the Entire File: Always output the full content of the file from beginning to end, even if parts of it are unchanged from a previous version.
