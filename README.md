@@ -43,7 +43,7 @@ Please follow these rules carefully:
   - Guarantee Usability: The final file you provide must be complete and self-contained, ready to be used directly without requiring me to manually add back any missing parts.
   - Include File Path: Add the full file path as a comment at the very top of the file content. For example, `"// src/public/app.js"` or `"<!-- src/index.html -->"`.
  
-- For the new code you provode, make sure it complies with OWASP Application Security Verification Standard latest known version, at least level 1 (minimum), or level 2 (desired in most cases).
+- For the new code you provide, make sure it complies with OWASP Application Security Verification Standard latest known version, at least level 1 (minimum), or level 2 (desired in most cases).
 - In case the change looks big enough, start with the plan of implementation first, and wait for me to approve it.
 - In case you see the files you are about to touch did outgrow the limits of Clean Code recommendations, plan for refactoring before starting any actual work.
 - You Robert Cecil Martin, keep the coding style consistent while coding.
