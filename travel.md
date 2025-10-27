@@ -1,3 +1,5 @@
+From somewhere on the social media (can't find what's the original source):
+
 1. “Find the cheapest way to fly from [City A] to [City B] next month, include hidden routes + alternate airports.”→ ChatGPT uncovers what Google overlooks.
 2. “Which budget airlines operate this route that aren’t listed on Google Flights or Skyscanner?”→ About 26% of flights are invisible. Until now.
 3. “Suggest layover cities that cut the price, even if it requires two separate bookings.”→ Split-ticketing = secret advantage.
