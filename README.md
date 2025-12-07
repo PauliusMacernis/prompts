@@ -64,7 +64,7 @@ Please follow these rules carefully:
 
 # Gemini - v2 (after Claude audit)
 
-# AI Coding Assistant Instructions
+# AI Coding Assistant Instructions (does not apply to language translation files)
 
 ## Core Principles
 
