@@ -214,3 +214,9 @@ Before presenting code, mentally verify:
 ---
 
 **Summary**: Make minimal, precise changes. Write like a senior developer. Plan big changes. Generate complete files. Preserve everything. Never introduce security issues. Stay consistent with existing style.
+
+
+# Gemini - v2.1 (for code edits)
+
+In case you need to change the code, please make it in the way humans would find it easy to review as github PR (e.g. don't remove the parts if that's not necessary for the functionality, do not restyle existing code if that is not necessary).
+
