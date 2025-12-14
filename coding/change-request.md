@@ -18,6 +18,11 @@
    - Unused-looking functions or variables
    - TODO/FIXME markers
    - Commented-out code blocks
+   - **ENTIRE METHODS** — if a file has 10 methods and you're adding 1, the output must have 11 methods
+   - **NAMESPACES** — never change existing namespace declarations
+   - **CONSTRUCTORS** — never rewrite existing constructor patterns
+
+   **CRITICAL:** When modifying an existing file, your changes must be ADDITIVE. You are adding TO the file, not rewriting it. If the original file is 300 lines and you're adding 20 lines of new functionality, your output must be ~320 lines — NOT a "clean rewrite" of 80 lines.
 
 3. **NEVER invent files or paths.** 
    - If a file exists in the project, modify THAT file using its exact path from the file tree
@@ -67,6 +72,14 @@
    - If you think refactoring would help, ASK first — don't just do it
    - Minimal changes to achieve the stated goal
 
+10. **NEVER rewrite existing files.** This is catastrophic and has happened before:
+    - If asked to "add a method to MemberService.php", you ADD that method to the existing 300-line file
+    - You do NOT output a new 80-line "clean" version that deletes all existing methods
+    - You do NOT change namespaces, constructors, or architectural patterns
+    - You do NOT rename existing methods (e.g., changing `login()` to `authenticate()`)
+    - The original file structure, methods, comments, and logic must ALL be preserved
+    - Your output = original file + your additions
+
 ---
 
 ## Git Workflow Context
@@ -99,11 +112,11 @@ Before doing anything else, locate and read the **File Tree** section in the pro
 ### Step 2: Cite Your Sources (MANDATORY)
 Before generating ANY code, you MUST list the exact file paths you will modify/create.
 
-**For files you will MODIFY — prove they exist:**
+**For files you will MODIFY — prove they exist AND note the size:**
 ```
 FILES I WILL MODIFY:
-- member/login.php ← EXISTS: found in tree under "member/" directory
-- app/Services/MemberService.php ← EXISTS: found in tree under "app/Services/"
+- member/login.php ← EXISTS: found in tree under "member/" (~85 lines, will become ~110)
+- app/Services/MemberService.php ← EXISTS: found in tree under "app/Services/" (~300 lines, will become ~320)
 ```
 
 **For files you will CREATE — justify the location:**
@@ -119,8 +132,16 @@ FILES I WILL MODIFY:
 ```
 This is wrong because "common file location" is not proof. You must find it IN THE PROVIDED TREE.
 
+**BAD (rewrite instead of modify):**
+```
+FILES I WILL MODIFY:
+- app/Services/MemberService.php ← EXISTS (~300 lines, will become ~80 after cleanup)
+```
+This is wrong because you're DELETING code. Modified files must get LARGER, not smaller.
+
 **Rules for this step:**
 - For MODIFY: you must confirm the file appears in the file tree. If you cannot find it, you cannot list it as "modify"
+- For MODIFY: your output line count must be >= original line count (you're adding, not rewriting)
 - For CREATE: you must justify the location based on where similar files exist
 - If a file doesn't exist and you listed it under MODIFY, that's a hallucination — stop and correct yourself
 - Do not proceed to code generation until this list is complete and accurate
@@ -169,9 +190,11 @@ Before submitting, verify:
 - [ ] File paths I'm using exist in the file tree (verified, not assumed)
 - [ ] No truncation anywhere
 - [ ] No removed existing code
+- [ ] For MODIFIED files: my output is LONGER than the original (additions, not rewrites)
 - [ ] All files under 300 lines
 - [ ] Security measures included
 - [ ] Matches existing code style exactly
+- [ ] Namespaces, constructors, and method signatures unchanged (unless explicitly requested)
 - [ ] Result is one clean committable unit
 
 ---
@@ -230,6 +253,34 @@ Every generated file must:
 3. Be 100% complete — zero placeholders
 4. Be copy-paste ready
 5. Be under 300 lines
+6. **For MODIFIED files: be LONGER than the original** (you're adding, not rewriting)
+
+### CATASTROPHIC FAILURE EXAMPLE — DO NOT DO THIS:
+
+**Request:** "Add a getParticipants() method to MemberService.php"
+
+**Original file:** 300 lines with namespace `ToolClub\Services`, 15 existing methods
+
+**WRONG output (rewrite):**
+```php
+<?php
+namespace App\Services;  // WRONG: changed namespace
+class MemberService {
+    public function authenticate() { } // WRONG: renamed existing method
+    public function getParticipants() { } // Only kept the new method
+}
+// 80 lines total — DELETED 220 lines of business logic
+```
+
+**CORRECT output (additive):**
+```php
+<?php
+namespace ToolClub\Services;  // PRESERVED
+// ... all 300 original lines preserved exactly ...
+    public function getParticipants() { } // NEW method added at end
+}
+// ~320 lines total — original + addition
+```
 
 ### When to Show Diff vs Complete File
 
@@ -361,11 +412,12 @@ Before every response, confirm:
 - [ ] For each MODIFY file: can I point to where it appears in the tree?
 - [ ] For each CREATE file: did I justify location based on existing similar files?
 - [ ] Does every code block start with a path comment matching my citations?
+- [ ] **For MODIFIED files: is my output LONGER than the original?** (additions, not rewrites)
+- [ ] Did I preserve ALL existing methods, namespaces, constructors, and comments?
 - [ ] Am I staying in scope? (no unrequested refactoring or new shared components)
 - [ ] Did I check existing code for bugs/violations first?
 - [ ] Did I answer only what was asked?
 - [ ] Is every file 100% complete with zero truncation?
-- [ ] Did I preserve all existing code, comments, and structure?
 - [ ] Are all files under 300 lines?
 - [ ] Is security properly handled?
 - [ ] Does style match the existing codebase?
@@ -374,4 +426,4 @@ Before every response, confirm:
 - [ ] Will this introduce any regressions?
 - [ ] Is this one clean committable unit?
 
-**If any answer is "no" or "unsure" — stop and address it before proceeding.**
+**Output code to Canvas. If any answer is "no" or "unsure" — stop and address it before proceeding.**
