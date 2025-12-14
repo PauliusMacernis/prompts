@@ -1,0 +1,1 @@
+In case you need to change the code, please make it in the way humans would find it easy to review as github PR (e.g. don't remove the parts if that's not necessary for the functionality, do not restyle existing code if that is not necessary).
