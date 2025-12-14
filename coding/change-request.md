@@ -21,6 +21,8 @@
    - **ENTIRE METHODS** — if a file has 10 methods and you're adding 1, the output must have 11 methods
    - **NAMESPACES** — never change existing namespace declarations
    - **CONSTRUCTORS** — never rewrite existing constructor patterns
+   - **UI/UX ELEMENTS** — loading spinners, icons, fonts, styling, error handling
+   - **SECURITY FEATURES** — CSRF tokens, redirect validation, input sanitization
 
    **CRITICAL:** When modifying an existing file, your changes must be ADDITIVE. You are adding TO the file, not rewriting it. If the original file is 300 lines and you're adding 20 lines of new functionality, your output must be ~320 lines — NOT a "clean rewrite" of 80 lines.
 
@@ -79,6 +81,16 @@
     - You do NOT rename existing methods (e.g., changing `login()` to `authenticate()`)
     - The original file structure, methods, comments, and logic must ALL be preserved
     - Your output = original file + your additions
+
+11. **NEVER change implementation architecture.** Preserve the existing approach:
+    - If the file uses AJAX → keep AJAX (don't switch to server-side form POST)
+    - If the file uses server-side rendering → keep that (don't switch to AJAX)
+    - If the file has a specific UI library/framework → keep it
+    - If the file has specific CSS/styling → preserve it exactly
+    - If the file has security features (CSRF, redirect validation) → keep them
+    - If the file uses a specific bootstrap/require pattern → keep it
+    
+    **Your job is to add functionality within the existing architecture, not redesign the architecture.**
 
 ---
 
@@ -195,6 +207,7 @@ Before submitting, verify:
 - [ ] Security measures included
 - [ ] Matches existing code style exactly
 - [ ] Namespaces, constructors, and method signatures unchanged (unless explicitly requested)
+- [ ] Implementation architecture preserved (AJAX stays AJAX, UI stays same, security features kept)
 - [ ] Result is one clean committable unit
 
 ---
@@ -257,6 +270,8 @@ Every generated file must:
 
 ### CATASTROPHIC FAILURE EXAMPLE — DO NOT DO THIS:
 
+**Example 1: Deleting existing code**
+
 **Request:** "Add a getParticipants() method to MemberService.php"
 
 **Original file:** 300 lines with namespace `ToolClub\Services`, 15 existing methods
@@ -281,6 +296,40 @@ namespace ToolClub\Services;  // PRESERVED
 }
 // ~320 lines total — original + addition
 ```
+
+**Example 2: Changing implementation architecture**
+
+**Request:** "After login, check participant count and redirect accordingly"
+
+**Original:** AJAX-based login with polished UI, loading spinner, return_to validation
+
+**WRONG output (architecture change):**
+```php
+<?php
+// Changed to server-side POST — WRONG
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { ... }
+?>
+<!-- Generic UI replacing the polished one — WRONG -->
+<!-- Removed return_to security logic — WRONG -->
+```
+
+**CORRECT output (preserve architecture):**
+```javascript
+// Keep the existing AJAX approach, modify the success handler:
+if (result.success) {
+    // NEW: Check participants before redirecting
+    const participantResponse = await fetch('/api/get_participants.php');
+    const participants = await participantResponse.json();
+    if (participants.length === 1) {
+        // Auto-select and redirect
+    } else if (participants.length > 1) {
+        window.location.href = '/member/select_participant.php';
+    } else {
+        window.location.href = "<?= htmlspecialchars($returnTo) ?>"; // PRESERVED
+    }
+}
+```
+All existing UI, security features, and patterns preserved.
 
 ### When to Show Diff vs Complete File
 
@@ -414,6 +463,7 @@ Before every response, confirm:
 - [ ] Does every code block start with a path comment matching my citations?
 - [ ] **For MODIFIED files: is my output LONGER than the original?** (additions, not rewrites)
 - [ ] Did I preserve ALL existing methods, namespaces, constructors, and comments?
+- [ ] Did I preserve the implementation architecture? (AJAX/POST, UI, security features)
 - [ ] Am I staying in scope? (no unrequested refactoring or new shared components)
 - [ ] Did I check existing code for bugs/violations first?
 - [ ] Did I answer only what was asked?
@@ -426,4 +476,4 @@ Before every response, confirm:
 - [ ] Will this introduce any regressions?
 - [ ] Is this one clean committable unit?
 
-**Output code to Canvas. If any answer is "no" or "unsure" — stop and address it before proceeding.**
+**If any answer is "no" or "unsure" — stop and address it before proceeding.**
