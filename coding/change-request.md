@@ -300,4 +300,4 @@ Before every response, confirm:
 - [ ] Will this introduce any regressions?
 - [ ] Is this one clean committable unit?
 
-**If any answer is "no" or "unsure" — stop and address it before proceeding.**
+**If any answer is "no" or "unsure" — stop and address it before proceeding. Use canvas for code output.**
